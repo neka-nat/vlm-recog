@@ -55,7 +55,7 @@ def merge_boxes(
         for i, m in enumerate(merged):
             if (
                 iou(box, m) >= iou_threshold
-                and coverage(box, m) >= coverage_threshold
+                or coverage(box, m) >= coverage_threshold
             ):
                 mx1, my1, mx2, my2 = m
                 merged[i] = (
