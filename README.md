@@ -11,7 +11,7 @@ export GEMINI_API_KEY=<your_api_key>
 
 ### Requirements
 
-- Python 3.13+
+- Python 3.11+
 - Google Gemini API key (set as `GEMINI_API_KEY` environment variable)
 
 ## Quick Start
