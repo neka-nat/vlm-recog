@@ -30,7 +30,7 @@ def detect(image: Image.Image, labels: list[str]) -> DetectedItems:
     image.thumbnail([1024, 1024], Image.Resampling.LANCZOS)
     labels_tokens = ", ".join([f'"{l}"' for l in labels[:-1]])
     if len(labels) == 1:
-        label_tokens += labels[0]
+        labels_tokens += labels[0]
     else:
         labels_tokens += f" and \"{labels[-1]}\""
 
