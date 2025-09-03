@@ -65,10 +65,10 @@ def detect(
     for item in items:
         # Get bounding box coordinates
         box = item["box_2d"]
-        y0 = int(box[0] / 1000 * image.size[1])
-        x0 = int(box[1] / 1000 * image.size[0])
-        y1 = int(box[2] / 1000 * image.size[1])
-        x1 = int(box[3] / 1000 * image.size[0])
+        y0 = int(box[0] / input_image_size[1] * image.size[1])
+        x0 = int(box[1] / input_image_size[0] * image.size[0])
+        y1 = int(box[2] / input_image_size[1] * image.size[1])
+        x1 = int(box[3] / input_image_size[0] * image.size[0])
 
         # Skip invalid boxes
         if y0 >= y1 or x0 >= x1:
