@@ -22,12 +22,16 @@ def parse_json(json_output: str) -> str:
     return output
 
 
-def detect(image: Image.Image, labels: list[str]) -> DetectedItems:
+def detect(
+    image: Image.Image,
+    labels: list[str],
+    input_image_size: tuple[int, int] = (1024, 1024)
+) -> DetectedItems:
     if not labels:
         raise ValueError("labels is empty")
 
     client = genai.Client()
-    image.thumbnail([1024, 1024], Image.Resampling.LANCZOS)
+    image.thumbnail(input_image_size, Image.Resampling.LANCZOS)
     labels_tokens = ", ".join([f'"{l}"' for l in labels[:-1]])
     if len(labels) == 1:
         labels_tokens += labels[0]
