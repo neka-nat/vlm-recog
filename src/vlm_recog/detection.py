@@ -25,8 +25,21 @@ def parse_json(json_output: str) -> str:
 def detect(
     image: Image.Image,
     labels: list[str],
-    input_image_size: tuple[int, int] = (1024, 1024)
+    input_image_size: tuple[int, int] = (1024, 1024),
+    image_description: str = ""
 ) -> DetectedItems:
+    """
+    Detect objects in the image using VLM model.
+
+    Args:
+        image: The image to detect objects in.
+        labels: The labels to detect.
+        input_image_size: The size of the image to be used as input to the model.
+        image_description: The description of the image.
+
+    Returns:
+        A list of detected items.
+    """
     if not labels:
         raise ValueError("labels is empty")
 
@@ -38,12 +51,13 @@ def detect(
     else:
         labels_tokens += f" and \"{labels[-1]}\""
 
-    prompt = f"""
-    Give the segmentation masks for the {labels_tokens}.
-    Output a JSON list of segmentation masks where each entry contains the 2D
-    bounding box in the key "box_2d", the segmentation mask in key "mask", and
-    the text label in the key "label". Use descriptive labels.
-    """
+    prompt = image_description + "\n" if image_description else ""
+    prompt += (
+        f"Give the segmentation masks for the {labels_tokens}.\n"
+        "Output a JSON list of segmentation masks where each entry contains the 2D\n"
+        "bounding box in the key 'box_2d', the segmentation mask in key 'mask', and\n"
+        "the text label in the key 'label'. Use descriptive labels.\n"
+    )
     logger.debug(f"Prompt: {prompt}")
 
     config = types.GenerateContentConfig(
