@@ -26,7 +26,8 @@ def detect(
     image: Image.Image,
     labels: list[str],
     input_image_size: tuple[int, int] = (1024, 1024),
-    image_description: str = ""
+    image_description: str = "",
+    model_type: str = "gemini-2.5-flash"
 ) -> DetectedItems:
     """
     Detect objects in the image using VLM model.
@@ -36,6 +37,7 @@ def detect(
         labels: The labels to detect.
         input_image_size: The size of the image to be used as input to the model.
         image_description: The description of the image.
+        model_type: The type of model to use. Default is "gemini-2.5-flash".
 
     Returns:
         A list of detected items.
@@ -65,7 +67,7 @@ def detect(
     )
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=model_type,
         contents=[prompt, image],
         config=config
     )
