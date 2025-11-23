@@ -62,9 +62,14 @@ def detect(
     )
     logger.debug(f"Prompt: {prompt}")
 
-    config = types.GenerateContentConfig(
-        thinking_config=types.ThinkingConfig(thinking_budget=0)
-    )
+    if model_type.endswith("flash"):
+        config = types.GenerateContentConfig(
+            thinking_config=types.ThinkingConfig(thinking_budget=0)
+        )
+    else:
+        config = types.GenerateContentConfig(
+            thinking_config=types.ThinkingConfig(thinking_budget=-1)
+        )
 
     response = client.models.generate_content(
         model=model_type,
