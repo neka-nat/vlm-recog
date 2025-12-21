@@ -14,12 +14,13 @@ from vlm_recog.models import DetectedItem, DetectedItems
 def parse_json(json_output: str) -> str:
     # Parsing out the markdown fencing
     lines = json_output.splitlines()
+    output = None
     for i, line in enumerate(lines):
         if line == "```json":
             json_output = "\n".join(lines[i+1:])  # Remove everything before "```json"
             output = json_output.split("```")[0]  # Remove everything after the closing "```"
             break  # Exit the loop once "```json" is found
-    return output
+    return output if output else json_output
 
 
 def detect(
@@ -79,7 +80,11 @@ def detect(
 
     # Parse JSON response
     logger.debug(f"Response: {response.text}")
-    items = json.loads(parse_json(response.text))
+    try:
+        items = json.loads(parse_json(response.text))
+    except json.JSONDecodeError:
+        logger.error(f"Failed to parse JSON response: {response.text}")
+        return []
 
     detected_items: DetectedItems = []
     # Process each mask
